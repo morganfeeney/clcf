@@ -2,6 +2,9 @@ import { format, parseISO } from 'date-fns'
 import { allPosts } from 'contentlayer/generated'
 import { getMDXComponent } from 'next-contentlayer/hooks'
 
+export const dynamicParams = false;
+
+
 export const generateStaticParams = async () => allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
 
 export const generateMetadata = ({ params }) => {
