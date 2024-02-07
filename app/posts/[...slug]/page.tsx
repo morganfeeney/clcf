@@ -5,15 +5,16 @@ import { getMDXComponent } from 'next-contentlayer/hooks'
 export const dynamicParams = false;
 
 
-export const generateStaticParams = async () => allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
+export const generateStaticParams = async () => allPosts.map((post) => ({ slug: [post._raw.flattenedPath] }))
 
 export const generateMetadata = ({ params }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug[1])
+  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug[0])
+    if (!post) throw new Error(`Post not found for slug: ${params.slug}`)
   return { title: post.title }
 }
 
 const PostLayout = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug[1])
+  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug[0])
 
   const Content = getMDXComponent(post.body.code)
 
